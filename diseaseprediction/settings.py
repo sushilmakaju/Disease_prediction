@@ -137,7 +137,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',  # Optional, if using session authentication
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',  # Optional, for JWT
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#     ),
 }

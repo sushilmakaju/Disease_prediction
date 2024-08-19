@@ -80,12 +80,36 @@ prev = pd.read_csv(r'C:\\Users\\Asus\\Desktop\\finalyearproject_diseaseprediciti
 
 # Load the model
 cls = joblib.load('ExtraTrees.pkl')
+print(cls)
 
+# Print the model's parameters
+print(cls.get_params())
+
+if hasattr(cls, 'feature_importances_'):
+    print(cls.feature_importances_)
+else:
+    print("The model does not have feature_importances_ attribute.")
+
+# Test prediction with dummy data
+dummy_data = np.zeros((1, 222))  # Assuming the model expects 7 features
+prediction = cls.predict(dummy_data)
+print(f"Test prediction: {prediction}")
+
+@permission_classes ([AllowAny])
 def predictions(symptoms):
+    # Debugging line to check the type of symptoms
+    print(f"Type of symptoms: {type(symptoms)}")
+    
+    # Ensure it's a list
+    if not isinstance(symptoms, list):
+        raise ValueError(f"Expected a list of symptoms, but got {type(symptoms)}")
+
     # Convert symptoms to weights
     l = symptoms + ['vomiting'] * (7 - len(symptoms))
     x = np.array(sym['Symptom'])
     y = np.array(sym['weight'])
+    
+    # Convert symptoms to their corresponding weights
     l = [y[np.where(x == symptom)[0][0]] for symptom in l]
     
     # Predict the disease
@@ -93,34 +117,45 @@ def predictions(symptoms):
     pred = cls.predict(res)
     return pred[0]
 
+
+@permission_classes ([AllowAny])
 @api_view(['GET'])
 def predict_disease(request):
     symptoms = request.GET.getlist('queue[]')  # Get the list of symptoms from the request
 
-    print(f"Symptoms: {symptoms}")
-    
-    print("hello world")
-    # Check the length of the symptoms list, not the request object
+    # Debugging line: print the symptoms list to console
+    print(f"Symptoms: {symptoms}")  # This should print a list of symptoms
+
+    # Ensure symptoms is a list and not None
+    if not symptoms or not isinstance(symptoms, list):
+        return Response({'error': 'Invalid input. Please provide a list of symptoms.'}, status=400)
+
+    # Check the length of the symptoms list
     if len(symptoms) < 3 or len(symptoms) > 7:
         return Response({'error': 'Please provide between 3 to 7 symptoms.'}, status=400)
 
-    disease = predictions(symptoms)
-    description = desc[desc['Disease'] == disease]['Description'].iloc[0]
-    precautions = prev[prev['Disease'] == disease].iloc[0]
-    
-    precaution1 = precautions['Precaution_1']
-    precaution2 = precautions['Precaution_2']
-    precaution3 = precautions.get('Precaution_3', None)
-    precaution4 = precautions.get('Precaution_4', None)
-    
-    response_data = {
-        'disease': disease,
-        'description': description,
-        'precaution1': precaution1,
-        'precaution2': precaution2,
-        'precaution3': precaution3,
-        'precaution4': precaution4,
-    }
+    try:
+        disease = predictions(symptoms)
+        description = desc[desc['Disease'] == disease]['Description'].iloc[0]
+        precautions = prev[prev['Disease'] == disease].iloc[0]
+        
+        precaution1 = precautions['Precaution_1']
+        precaution2 = precautions['Precaution_2']
+        precaution3 = precautions.get('Precaution_3', None)
+        precaution4 = precautions.get('Precaution_4', None)
+        
+        response_data = {
+            'disease': disease,
+            'description': description,
+            'precaution1': precaution1,
+            'precaution2': precaution2,
+            'precaution3': precaution3,
+            'precaution4': precaution4,
+        }
 
-    return Response(response_data)
-
+        return Response(response_data)
+    
+    except Exception as e:
+        # Catch and log any exception that occurs during the prediction process
+        print(f"An error occurred: {e}")
+        return Response({'error': 'An error occurred during the prediction process. Please try again later.'}, status=500)

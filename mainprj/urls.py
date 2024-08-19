@@ -7,6 +7,6 @@ urlpatterns = [
     
     path('api/user/profile/', ProfileApiView.as_view(), name='profile_view'),
     
-    path('api/predict/', predictions, name='predict_disease'),
+    path('api/predict/', predict_disease, name='predict_disease'),
     
     ]
