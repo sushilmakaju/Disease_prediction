@@ -7,6 +7,7 @@ import HomeComponent from './component/Home/HomeComponent';
 import GetStartedPage from './component/GetstartedComponent/getStartedComponent';
 import ForgotPassword from './component/forgetPasswordComponent/forgetPasswordComponent';
 import Dashboard from './component/DashboardComponent/dashboardComponent';
+import DiseasePredictionComponent from './component/CheckDiseaseComponent/checkDiseaseComponent';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/getstarted" element={<GetStartedPage />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/checkdisease" element={< DiseasePredictionComponent/>} />
           
         </Routes>
       

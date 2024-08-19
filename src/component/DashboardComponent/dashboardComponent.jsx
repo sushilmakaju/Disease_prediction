@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [profile, setProfile] = useState({
@@ -8,33 +9,34 @@ const Dashboard = () => {
   });
 
   const [error, setError] = useState(null);
-  
+  const navigate = useNavigate();  // Use useNavigate instead of useHistory
+
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('token');  // Replace with an actual valid token
-  
+
       try {
-          const response = await axios.get('http://localhost:8000/api/user/profile/', {
-              headers: {
-                  Authorization: `Token ${token}`,  // Adjust based on your backend
-              },
-          });
-          setProfile(response.data);
+        const response = await axios.get('http://localhost:8000/api/user/profile/', {
+          headers: {
+            Authorization: `Token ${token}`,  // Adjust based on your backend
+          },
+        });
+        setProfile(response.data);
       } catch (error) {
-          console.error('There was an error fetching the profile!', error.response || error.message);
-          setError(error.message);
+        console.error('There was an error fetching the profile!', error.response || error.message);
+        setError(error.message);
       }
-  };
-  
-  
+    };
 
     fetchProfile();
   }, []);
 
+  const handlePredictDiseaseClick = () => {
+    navigate('/checkdisease');  // Navigate to the Disease Prediction page
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-
       {/* Main Content */}
       <main className="flex flex-grow p-6">
         <div className="w-1/4 bg-white rounded-lg shadow-lg p-4">
@@ -51,7 +53,10 @@ const Dashboard = () => {
           
           {/* Actions */}
           <div className="mt-6 text-center">
-            <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out">
+            <button
+              onClick={handlePredictDiseaseClick}
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
+            >
               Predict Disease
             </button>
           </div>
