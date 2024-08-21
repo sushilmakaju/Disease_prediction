@@ -88,10 +88,6 @@ const Dashboard = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-200 text-center p-4">
-        <p className="text-gray-600">© 2024 Disease Prediction System. All rights reserved.</p>
-      </footer>
     </div>
   );
 };

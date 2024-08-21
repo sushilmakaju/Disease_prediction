@@ -8,6 +8,7 @@ import GetStartedPage from './component/GetstartedComponent/getStartedComponent'
 import ForgotPassword from './component/forgetPasswordComponent/forgetPasswordComponent';
 import Dashboard from './component/DashboardComponent/dashboardComponent';
 import DiseasePredictionComponent from './component/CheckDiseaseComponent/checkDiseaseComponent';
+import Footer from './component/footer/footer';
 
 
 function App() {
@@ -25,6 +26,8 @@ function App() {
           <Route path="/checkdisease" element={< DiseasePredictionComponent/>} />
           
         </Routes>
+
+        <Footer />
       
     </Router>
   );
