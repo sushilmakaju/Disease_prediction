@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 AUTH_USER_MODEL = 'mainprj.User'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -137,7 +137,13 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',  # Optional, if using session authentication
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',  # Optional, for JWT
     ),
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
+
+# settings.py
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
