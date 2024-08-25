@@ -1,24 +1,22 @@
-import {useState} from 'react'
+import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import 'react-toastify/dist/ReactToastify.css'; 
-
-// http://127.0.0.1:8000/
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignupComponent = () => {
-
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    // confirmPassword: "",
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    gender: '',
+    permanentAddress: '',
+    temporaryAddress: ''
   });
 
-  const [errors, setErrors] = useState({}); // D structure Method
-  // const [showPassword, setShowPassword] = useState(false);
-  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,13 +28,14 @@ const SignupComponent = () => {
 
   const validate = () => {
     const errors = {};
-    if (!userData.username) errors.username = "Username is required";
-    if (!userData.email) errors.email = "Email is required";
-    if (!userData.password) errors.password = "Password is required";
-    // if (!userData.confirmPassword)
-    //   errors.confirmPassword = "Confirm Password is required";
-    // if (userData.password !== userData.confirmPassword)
-    //   errors.confirmPassword = "Passwords must match";
+    if (!userData.username) errors.username = 'Username is required';
+    if (!userData.email) errors.email = 'Email is required';
+    if (!userData.password) errors.password = 'Password is required';
+    if (!userData.confirmPassword) errors.confirmPassword = 'Confirm Password is required';
+    if (userData.password !== userData.confirmPassword) errors.confirmPassword = 'Passwords must match';
+    if (!userData.gender) errors.gender = 'Gender is required';
+    if (!userData.permanentAddress) errors.permanentAddress = 'Permanent Address is required';
+    if (!userData.temporaryAddress) errors.temporaryAddress = 'Temporary Address is required';
     return errors;
   };
 
@@ -47,107 +46,157 @@ const SignupComponent = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const response = await axios.post(
-          "http://localhost:8000/register/",
-          {
-            name: userData.username,
-            email: userData.email,
-            password: userData.password,
-          }
-        );
+        const response = await axios.post('http://localhost:8000/register/', {
+          username: userData.username,
+          email: userData.email,
+          password: userData.password,
+          gender: userData.gender,
+          permanent_address: userData.permanentAddress,
+          temporary_address: userData.temporaryAddress,
+        });
         console.log(response);
-        toast.success("Registration successful");
+        toast.success('Registration successful');
 
         // navigate to login page
         setTimeout(() => {
-          navigate("/login");
+          navigate('/login');
         }, 2000);
       } catch (error) {
         console.error(error.message);
-        // toast.error(error.response.data.msg);
+        toast.error('Registration failed');
       }
     }
   };
 
-  // const togglePasswordVisibility = () => {
-  //   setShowPassword(!showPassword);
-  // };
-
-  // const toggleConfirmPasswordVisibility = () => {
-  //   setShowConfirmPassword(!showConfirmPassword);
-  // };
-
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500">
-      <form className="w-full max-w-md bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4 transform transition-all hover:scale-105" onSubmit={handleSubmit}>
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Signup</h2>
         <ToastContainer />
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-            Name
-          </label>
-          <input
-            className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
-            id="name"
-            type="text"
-            placeholder="Your Name"
-            name='username'
-            value={userData.username}
-            onChange={handleChange}
-          />
-          {errors.username && (
-              <div className="text-red-500 text-sm">{errors.username}</div>
-            )}
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
-            id="email"
-            type="email"
-            placeholder="Your Email"
-            name='email'
-            value={userData.email}
-            onChange={handleChange}
-          />
-          {errors.email && (
-            <div className="text-red-500 text-sm">{errors.email}</div>
-          )}
-        </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
-            id="password"
-            type="password"
-            placeholder="Your Password"
-            name="password"
-            value={userData.password}
-            onChange={handleChange}
-          />
-          
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <button
-            className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-            type="submit"
-          >
-            Register
-          </button>
-          <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-            Already have an account?
-          </a>
-        </div>
-      </form>
-      
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+              Username
+            </label>
+            <input
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              id="username"
+              type="text"
+              placeholder="Your Username"
+              name="username"
+              value={userData.username}
+              onChange={handleChange}
+            />
+            {errors.username && <div className="text-red-500 text-sm">{errors.username}</div>}
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              id="email"
+              type="email"
+              placeholder="Your Email"
+              name="email"
+              value={userData.email}
+              onChange={handleChange}
+            />
+            {errors.email && <div className="text-red-500 text-sm">{errors.email}</div>}
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+              Password
+            </label>
+            <input
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              id="password"
+              type="password"
+              placeholder="Your Password"
+              name="password"
+              value={userData.password}
+              onChange={handleChange}
+            />
+            {errors.password && <div className="text-red-500 text-sm">{errors.password}</div>}
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
+              Confirm Password
+            </label>
+            <input
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              id="confirmPassword"
+              type="password"
+              placeholder="Confirm Your Password"
+              name="confirmPassword"
+              value={userData.confirmPassword}
+              onChange={handleChange}
+            />
+            {errors.confirmPassword && <div className="text-red-500 text-sm">{errors.confirmPassword}</div>}
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="gender">
+              Gender
+            </label>
+            <select
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              id="gender"
+              name="gender"
+              value={userData.gender}
+              onChange={handleChange}
+            >
+              <option value="">Select Gender</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+              <option value="O">Other</option>
+            </select>
+            {errors.gender && <div className="text-red-500 text-sm">{errors.gender}</div>}
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="permanentAddress">
+              Permanent Address
+            </label>
+            <input
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              id="permanentAddress"
+              type="text"
+              placeholder="Your Permanent Address"
+              name="permanentAddress"
+              value={userData.permanentAddress}
+              onChange={handleChange}
+            />
+            {errors.permanentAddress && <div className="text-red-500 text-sm">{errors.permanentAddress}</div>}
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="temporaryAddress">
+              Temporary Address
+            </label>
+            <input
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              id="temporaryAddress"
+              type="text"
+              placeholder="Your Temporary Address"
+              name="temporaryAddress"
+              value={userData.temporaryAddress}
+              onChange={handleChange}
+            />
+            {errors.temporaryAddress && <div className="text-red-500 text-sm">{errors.temporaryAddress}</div>}
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+              type="submit"
+            >
+              Register
+            </button>
+            <Link to="/login" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+              Already have an account?
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignupComponent
+export default SignupComponent;

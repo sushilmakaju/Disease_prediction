@@ -9,6 +9,7 @@ import ForgotPassword from './component/forgetPasswordComponent/forgetPasswordCo
 import Dashboard from './component/DashboardComponent/dashboardComponent';
 import DiseasePredictionComponent from './component/CheckDiseaseComponent/checkDiseaseComponent';
 import Footer from './component/footer/footer';
+import EditProfile from './component/EditProfile/EditProfileComponent';
 
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/checkdisease" element={< DiseasePredictionComponent/>} />
+          <Route path='/edit-profile' element={<EditProfile />} />
+
           
         </Routes>
 

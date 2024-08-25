@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const GetStartedPage = () => {
   return (
@@ -69,9 +70,9 @@ const GetStartedPage = () => {
 
       {/* Call to Action */}
       <div className="text-center">
-        <a href="/predict" className="bg-blue-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">
+        <Link to="/dashboard" className="bg-blue-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">
           Start Predicting Now
-        </a>
+        </Link>
       </div>
     </div>
   );
