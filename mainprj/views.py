@@ -162,3 +162,32 @@ class RecentPredictionsView(APIView):
         recent_preds = Prediction.objects.filter(user=request.user).order_by('-date')[:5]
         serializer = PredictionSerializer(recent_preds, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+    
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        old_password = request.data.get('old_password')
+        new_password = request.data.get('new_password')
+
+        # Check if old password is correct
+        if not user.check_password(old_password):
+            return Response({'old_password': 'Old password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate the new password
+        try:
+            validate_password(new_password, user)
+        except ValidationError as e:
+            return Response({'new_password': e.messages}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Hash and change the password
+        user.password = make_password(new_password)
+        user.save()
+
+        return Response({'detail': 'Password changed successfully'}, status=status.HTTP_200_OK)

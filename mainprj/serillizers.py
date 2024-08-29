@@ -25,3 +25,5 @@ class UserProfileserializers(serializers.ModelSerializer):
         if obj.profile_picture:
             return obj.profile_picture.url
         return None
+    
+
