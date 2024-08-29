@@ -119,7 +119,7 @@ const Dashboard = () => {
 
         <div className="flex-grow ml-6">
           <section className="mb-6">
-            <h2 className="text-2xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Recent Activity</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Recently Predicted Disease</h2>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105 duration-300 ease-in-out">
               {recentPredictions.length > 0 ? (
                 <ul>

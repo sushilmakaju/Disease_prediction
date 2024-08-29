@@ -69,9 +69,9 @@ const SignupComponent = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-600 to-green-500">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Signup</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-blue-700">Signup</h2>
         <ToastContainer />
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -79,7 +79,7 @@ const SignupComponent = () => {
               Username
             </label>
             <input
-              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="username"
               type="text"
               placeholder="Your Username"
@@ -94,7 +94,7 @@ const SignupComponent = () => {
               Email
             </label>
             <input
-              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="email"
               type="email"
               placeholder="Your Email"
@@ -109,7 +109,7 @@ const SignupComponent = () => {
               Password
             </label>
             <input
-              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="password"
               type="password"
               placeholder="Your Password"
@@ -124,7 +124,7 @@ const SignupComponent = () => {
               Confirm Password
             </label>
             <input
-              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="confirmPassword"
               type="password"
               placeholder="Confirm Your Password"
@@ -139,7 +139,7 @@ const SignupComponent = () => {
               Gender
             </label>
             <select
-              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="gender"
               name="gender"
               value={userData.gender}
@@ -157,7 +157,7 @@ const SignupComponent = () => {
               Permanent Address
             </label>
             <input
-              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="permanentAddress"
               type="text"
               placeholder="Your Permanent Address"
@@ -172,7 +172,7 @@ const SignupComponent = () => {
               Temporary Address
             </label>
             <input
-              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="temporaryAddress"
               type="text"
               placeholder="Your Temporary Address"
@@ -184,12 +184,12 @@ const SignupComponent = () => {
           </div>
           <div className="flex items-center justify-between">
             <button
-              className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
               type="submit"
             >
               Register
             </button>
-            <Link to="/login" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+            <Link to="/login" className="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800">
               Already have an account?
             </Link>
           </div>

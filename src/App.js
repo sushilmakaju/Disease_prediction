@@ -10,6 +10,8 @@ import Dashboard from './component/DashboardComponent/dashboardComponent';
 import DiseasePredictionComponent from './component/CheckDiseaseComponent/checkDiseaseComponent';
 import Footer from './component/footer/footer';
 import EditProfile from './component/EditProfile/EditProfileComponent';
+import ChangePassword from './component/ChangePassword/chhangePassword';
+import AdminDashboard from './component/AdminDashboard/AdminDashboard';
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/checkdisease" element={< DiseasePredictionComponent/>} />
           <Route path='/edit-profile' element={<EditProfile />} />
+          <Route path='/change-password' element={<ChangePassword />} />
+          <Route path='/admin-dashboard' element={<AdminDashboard />} />
 
           
         </Routes>
