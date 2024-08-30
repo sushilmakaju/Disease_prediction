@@ -12,6 +12,7 @@ import Footer from './component/footer/footer';
 import EditProfile from './component/EditProfile/EditProfileComponent';
 import ChangePassword from './component/ChangePassword/chhangePassword';
 import AdminDashboard from './component/AdminDashboard/AdminDashboard';
+import ProtectedRoute from './protectedRoutes/protectedRoute';
 
 
 function App() {
@@ -25,10 +26,10 @@ function App() {
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/getstarted" element={<GetStartedPage />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<ProtectedRoute> < Dashboard/> </ProtectedRoute>} />
           <Route path="/checkdisease" element={< DiseasePredictionComponent/>} />
           <Route path='/edit-profile' element={<EditProfile />} />
-          <Route path='/change-password' element={<ChangePassword />} />
+          <Route path='/change-password' element={<ProtectedRoute> <ChangePassword /> </ProtectedRoute>} />
           <Route path='/admin-dashboard' element={<AdminDashboard />} />
 
           

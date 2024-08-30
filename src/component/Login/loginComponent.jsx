@@ -4,10 +4,13 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { login } from '../../features/auth/authSlice';
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [ loginData, setLoginData] = useState({
         email: "",
@@ -44,10 +47,15 @@ const LoginForm = () => {
                     loginData
                 );
                 console.log(response);
-                localStorage.setItem("token", response.data.token);
-                console.log(response.data.token)
 
+                const { token} = response.data;
+                localStorage.setItem("token", token);
+                console.log(response.data.token)
+                
+                dispatch(login({ token}))
+                
                 toast.success("Login successful");
+
                 setTimeout(() => {
                 navigate("/dashboard");
                 }, 2000);

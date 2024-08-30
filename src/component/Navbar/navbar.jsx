@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { logout } from '../../features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearch = (event) => {
-    event.preventDefault();
-    
-    console.log("Search term:", searchTerm);
+  const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -20,11 +22,26 @@ const Navbar = () => {
               <Link to="/" className="text-white text-2xl font-bold">D-Predict</Link>
             </div>
           </div>
-          
 
           <div className="hidden md:flex md:space-x-4">
-            <Link to="/login" className="text-white px-3 py-2 rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-700">Login</Link>
-            <Link to="/signup" className="text-white px-3 py-2 rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-700">Signup</Link>
+            {authState.isAuthenticated ? (
+              <>
+                <Link to="/settings" className="text-white px-3 py-2 rounded-md text-sm font-medium bg-green-600 hover:bg-green-700">
+                  Settings
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium bg-red-600 hover:bg-red-700"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="text-white px-3 py-2 rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-700">Login</Link>
+                <Link to="/signup" className="text-white px-3 py-2 rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-700">Signup</Link>
+              </>
+            )}
           </div>
           <div className="-mr-2 flex md:hidden">
             <button 
@@ -52,21 +69,43 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-           
-            <Link 
-              to="/login" 
-              className="text-white block px-3 py-2 rounded-md text-base font-medium bg-blue-600 hover:bg-blue-700"
-              onClick={() => setIsOpen(false)}
-            >
-              Login
-            </Link>
-            <Link 
-              to="/signup" 
-              className="text-white block px-3 py-2 rounded-md text-base font-medium bg-blue-600 hover:bg-blue-700"
-              onClick={() => setIsOpen(false)}
-            >
-              Signup
-            </Link>
+            {authState.isAuthenticated ? (
+              <>
+                <Link 
+                  to="/settings" 
+                  className="text-white block px-3 py-2 rounded-md text-base font-medium bg-green-600 hover:bg-green-700"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Settings
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}
+                  className="text-white block px-3 py-2 rounded-md text-base font-medium bg-red-600 hover:bg-red-700"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link 
+                  to="/login" 
+                  className="text-white block px-3 py-2 rounded-md text-base font-medium bg-blue-600 hover:bg-blue-700"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link 
+                  to="/signup" 
+                  className="text-white block px-3 py-2 rounded-md text-base font-medium bg-blue-600 hover:bg-blue-700"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Signup
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
