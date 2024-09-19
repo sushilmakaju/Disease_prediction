@@ -13,6 +13,8 @@ import EditProfile from './component/EditProfile/EditProfileComponent';
 import ChangePassword from './component/ChangePassword/chhangePassword';
 import AdminDashboard from './component/AdminDashboard/AdminDashboard';
 import ProtectedRoute from './protectedRoutes/protectedRoute';
+import TakeAppointment from './component/AppoinmentComponent/appoinmentPage';
+import SettingComponent from './component/SettingsComponent/settingComponent';
 
 
 function App() {
@@ -31,6 +33,8 @@ function App() {
           <Route path='/edit-profile' element={<EditProfile />} />
           <Route path='/change-password' element={<ProtectedRoute> <ChangePassword /> </ProtectedRoute>} />
           <Route path='/admin-dashboard' element={<AdminDashboard />} />
+          <Route path='/takeappoinment' element={<TakeAppointment/>} />
+          <Route path='/settings' element={<SettingComponent />} />
 
           
         </Routes>

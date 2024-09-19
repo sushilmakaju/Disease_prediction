@@ -92,7 +92,7 @@ const Dashboard = () => {
             <div className="relative group">
               <img
                 className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-500 dark:border-blue-300 shadow-md transition-transform transform hover:scale-110 duration-300 ease-in-out"
-                src={profile.profile_picture || "https://via.placeholder.com/150"}
+                src={profile.profile_picture}
                 alt=""
               />
               <button

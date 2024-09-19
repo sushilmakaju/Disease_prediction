@@ -26,20 +26,33 @@ const Navbar = () => {
           <div className="hidden md:flex md:space-x-4">
             {authState.isAuthenticated ? (
               <>
-                <Link to="/settings" className="text-white px-3 py-2 rounded-md text-sm font-medium bg-green-600 hover:bg-green-700">
+                <Link 
+                  to="/settings" 
+                  className="text-white hover:underline px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+                >
                   Settings
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium bg-red-600 hover:bg-red-700"
+                  className="text-white hover:underline px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link to="/login" className="text-white px-3 py-2 rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-700">Login</Link>
-                <Link to="/signup" className="text-white px-3 py-2 rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-700">Signup</Link>
+                <Link 
+                  to="/login" 
+                  className="text-white hover:underline px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+                >
+                  Login
+                </Link>
+                <Link 
+                  to="/signup" 
+                  className="text-white hover:underline px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+                >
+                  Signup
+                </Link>
               </>
             )}
           </div>
@@ -73,7 +86,7 @@ const Navbar = () => {
               <>
                 <Link 
                   to="/settings" 
-                  className="text-white block px-3 py-2 rounded-md text-base font-medium bg-green-600 hover:bg-green-700"
+                  className="text-white block px-3 py-2 rounded-md text-base font-medium hover:underline cursor-pointer"
                   onClick={() => setIsOpen(false)}
                 >
                   Settings
@@ -83,7 +96,7 @@ const Navbar = () => {
                     handleLogout();
                     setIsOpen(false);
                   }}
-                  className="text-white block px-3 py-2 rounded-md text-base font-medium bg-red-600 hover:bg-red-700"
+                  className="text-white block px-3 py-2 rounded-md text-base font-medium hover:underline cursor-pointer"
                 >
                   Logout
                 </button>
@@ -92,14 +105,14 @@ const Navbar = () => {
               <>
                 <Link 
                   to="/login" 
-                  className="text-white block px-3 py-2 rounded-md text-base font-medium bg-blue-600 hover:bg-blue-700"
+                  className="text-white block px-3 py-2 rounded-md text-base font-medium hover:underline cursor-pointer"
                   onClick={() => setIsOpen(false)}
                 >
                   Login
                 </Link>
                 <Link 
                   to="/signup" 
-                  className="text-white block px-3 py-2 rounded-md text-base font-medium bg-blue-600 hover:bg-blue-700"
+                  className="text-white block px-3 py-2 rounded-md text-base font-medium hover:underline cursor-pointer"
                   onClick={() => setIsOpen(false)}
                 >
                   Signup

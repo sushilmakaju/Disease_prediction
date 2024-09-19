@@ -12,7 +12,7 @@ const LoginForm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [ loginData, setLoginData] = useState({
+    const [loginData, setLoginData] = useState({
         email: "",
         password: ""
     });
@@ -48,11 +48,11 @@ const LoginForm = () => {
                 );
                 console.log(response);
 
-                const { token} = response.data;
+                const { token } = response.data;
                 localStorage.setItem("token", token);
                 console.log(response.data.token)
                 
-                dispatch(login({ token}))
+                dispatch(login({ token }))
                 
                 toast.success("Login successful");
 
@@ -129,6 +129,14 @@ const LoginForm = () => {
                 type="submit"
               >
                 Login
+              </button>
+              
+              <button
+                type="button"
+                className="text-teal-600 font-bold hover:text-teal-800 transition duration-300 ease-in-out"
+                onClick={() => navigate("/signup")}
+              >
+                Don't have an account? Sign up
               </button>
             </div>
             </form>

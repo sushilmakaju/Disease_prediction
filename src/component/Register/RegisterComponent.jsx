@@ -189,7 +189,7 @@ const SignupComponent = () => {
             >
               Register
             </button>
-            <Link to="/login" className="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800">
+            <Link to="/login" className="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800 transition duration-300 ease-in-out transform hover:scale-105">
               Already have an account?
             </Link>
           </div>
