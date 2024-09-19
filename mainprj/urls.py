@@ -18,6 +18,8 @@ urlpatterns = [
     
     path('api/user/recent-predictions/', RecentPredictionsView.as_view(), name='recent-predictions'),
     
+    path('api/logout/', logout_view, name='logout'),
+    
     ]
 
 if settings.DEBUG:

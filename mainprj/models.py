@@ -10,6 +10,11 @@ GENDER_CHOICES = [
 ('U', 'Prefer not to say'),
 ]
 
+USER_TYPE_CHOICES = [
+    ('patient', 'Patient'),
+    ('doctor', 'Doctor'),
+]
+
 class User(AbstractUser):
     username = models.CharField(max_length=200, default='User')
     email = models.EmailField(unique=True)

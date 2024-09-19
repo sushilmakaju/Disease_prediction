@@ -3,15 +3,17 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import make_password
 from .serillizers import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
-# import numpy as np
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+import numpy as np
+import pandas as pd
+import pickle
 
 
 class LoginAPIView(GenericAPIView):
@@ -77,12 +79,7 @@ class ProfileApiView(GenericAPIView):
 
 
 
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import AllowAny
-import numpy as np
-import pandas as pd
-import pickle
+
 
 # Load model and datasets
 model = pickle.load(open('ExtraTrees.pkl', 'rb'))
@@ -100,7 +97,7 @@ class PredictDiseaseView(APIView):
     def post(self, request):
         data = request.data.get('symptoms', [])
         features = [0] * 222
-        all_symptoms = list(symptoms)  # Ensure this is defined elsewhere
+        all_symptoms = list(symptoms)  
 
         for symptom in data:
             if symptom in all_symptoms:
@@ -191,3 +188,23 @@ class ChangePasswordView(APIView):
         user.save()
 
         return Response({'detail': 'Password changed successfully'}, status=status.HTTP_200_OK)
+    
+    
+# views.py
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+@api_view(['POST'])
+def logout_view(request):
+    # For token-based authentication
+    if request.auth:
+        request.auth.delete()  # Delete the token
+
+    # If using session-based authentication
+    if request.user.is_authenticated:
+        # Django built-in logout
+        from django.contrib.auth import logout
+        logout(request)
+
+    return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
