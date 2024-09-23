@@ -21,9 +21,9 @@ class UserProfileserializers(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'prediction_count', 'profile_picture']
         
-    def get_profile_picture(self, obj):
-        if obj.profile_picture:
-            return obj.profile_picture.url
-        return None
+    # def get_profile_picture(self, obj):
+    #     if obj.profile_picture:
+    #         return obj.profile_picture.url
+    #     return None
     
 

@@ -16,22 +16,26 @@ USER_TYPE_CHOICES = [
 ]
 
 class User(AbstractUser):
-    username = models.CharField(max_length=200, default='User')
-    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=200, blank=True, null=True)  # Make it optional
+    email = models.EmailField(unique=True)  # Email is unique and required
     password = models.CharField(max_length=200)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     prediction_count = models.IntegerField(default=0)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     permanent_address = models.CharField(max_length=255, blank=True, null=True)
-    temporary_address= models.CharField(max_length=255, blank=True, null=True)
-    
+    temporary_address = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
 
-    
-    
+    # Specify email as the unique identifier for authentication
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    def clean(self):
+        # Ensure username is set to a unique value or handle any specific validation you want.
+        super().clean()
+
+
     
     
     
