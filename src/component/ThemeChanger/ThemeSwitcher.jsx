@@ -13,6 +13,9 @@ const ThemeSwitcher = () => {
   }, []);
 
   useEffect(() => {
+
+    console.log(`Current theme: ${isDarkMode ? 'dark' : 'light'}`);
+    
     // Apply the theme to the document body
     if (isDarkMode) {
       document.documentElement.classList.add('dark');

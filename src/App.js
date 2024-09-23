@@ -15,36 +15,41 @@ import AdminDashboard from './component/AdminDashboard/AdminDashboard';
 import ProtectedRoute from './protectedRoutes/protectedRoute';
 import TakeAppointment from './component/AppoinmentComponent/appoinmentPage';
 import SettingComponent from './component/SettingsComponent/settingComponent';
-
+import ThemeSwitcher from './component/ThemeChanger/ThemeSwitcher';
 
 function App() {
   return (
     <Router>
+      <div className="flex flex-col min-h-screen">
+        {/* Navbar */}
         <Navbar />
-      
-        <Routes>
-          <Route path="/" element={< HomeComponent/>} />
-          <Route path="/signup" element={<SignupComponent />} />
-          <Route path="/login" element={<LoginComponent />} />
-          <Route path="/getstarted" element={<GetStartedPage />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/dashboard" element={<ProtectedRoute> < Dashboard/> </ProtectedRoute>} />
-          <Route path="/checkdisease" element={< DiseasePredictionComponent/>} />
-          <Route path='/edit-profile' element={<EditProfile />} />
-          <Route path='/change-password' element={<ProtectedRoute> <ChangePassword /> </ProtectedRoute>} />
-          <Route path='/admin-dashboard' element={<AdminDashboard />} />
-          <Route path='/takeappoinment' element={<TakeAppointment/>} />
-          <Route path='/settings' element={<SettingComponent />} />
 
-          
-        </Routes>
+        {/* Main Content */}
+        <div className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomeComponent />} />
+            <Route path="/signup" element={<SignupComponent />} />
+            <Route path="/login" element={<LoginComponent />} />
+            <Route path="/getstarted" element={<GetStartedPage />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
 
+            {/* Protected Routes */}
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/checkdisease" element={<ProtectedRoute><DiseasePredictionComponent /></ProtectedRoute>} />
+            <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
+            <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+            <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/takeappoinment" element={<ProtectedRoute><TakeAppointment /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><SettingComponent /></ProtectedRoute>} />
+            <Route path="/themechanger" element={<ThemeSwitcher />} />
+          </Routes>
+        </div>
+
+        {/* Footer */}
         <Footer />
-      
+      </div>
     </Router>
   );
 }
-
-
 
 export default App;

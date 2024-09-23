@@ -83,9 +83,9 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
-      {/* <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md"> */}
-        {/* <ThemeSwitcher /> Add the ThemeSwitcher here */}
-      {/* </header> */}
+      {/* <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md"> 
+         <ThemeSwitcher /> 
+      </header> */}
       <main className="flex flex-grow p-6">
         <div className="w-full md:w-1/4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 relative transition-transform transform hover:scale-105 duration-300 ease-in-out">
           <div className="text-center">
