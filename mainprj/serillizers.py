@@ -7,8 +7,6 @@ class Userserializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
-
 class PredictionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prediction
@@ -21,9 +19,12 @@ class UserProfileserializers(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'prediction_count', 'profile_picture']
         
-    # def get_profile_picture(self, obj):
-    #     if obj.profile_picture:
-    #         return obj.profile_picture.url
-    #     return None
+    def get_profile_picture_url(self, obj):
+        request = self.context.get('request')
+        if obj.profile_picture and hasattr(obj.profile_picture, 'url'):
+            return request.build_absolute_uri(obj.profile_picture.url)
+        return None
+        
+
     
 

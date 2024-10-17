@@ -1,7 +1,13 @@
 from django.urls import path
-from .views import *
+
 from django.conf.urls.static import static
 from django.conf import settings
+
+
+from mainprj .views.auth_views import LoginAPIView, RegisterView
+from mainprj .views.prediction_views import PredictDiseaseView, RecentPredictionsView
+from mainprj .views.profile_views import ProfileApiView
+from mainprj .views.other_views import ChangePasswordView
 
 urlpatterns = [
     path('login/',LoginAPIView.as_view(), name='login_view'),
@@ -18,7 +24,7 @@ urlpatterns = [
     
     path('api/user/recent-predictions/', RecentPredictionsView.as_view(), name='recent-predictions'),
     
-    path('api/logout/', logout_view, name='logout'),
+   
     
     ]
 

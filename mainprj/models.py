@@ -29,11 +29,8 @@ class User(AbstractUser):
 
     # Specify email as the unique identifier for authentication
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = []
 
-    def clean(self):
-        # Ensure username is set to a unique value or handle any specific validation you want.
-        super().clean()
 
 
     
