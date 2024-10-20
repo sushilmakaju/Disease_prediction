@@ -60,7 +60,12 @@ const LoginForm = () => {
                 navigate("/dashboard");
                 }, 2000);
             } catch (error) {
-                toast.error(error.response.data);
+                // Show error toast for incorrect credentials
+                if (error.response && error.response.status === 401) {
+                    toast.error("Incorrect email or password. Please try again.");
+                } else {
+                    toast.error("Something went wrong. Please try again later.");
+                }
             }
         }
     };
@@ -75,7 +80,7 @@ const LoginForm = () => {
           <div className="w-full max-w-md bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4 transform transition-all hover:scale-105">
             <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">Login</h2>
             <form onSubmit={handleSubmit}>
-            <ToastContainer />
+            <ToastContainer /> {/* Toast container added here */}
             <div className="mb-4">
               <label className="block text-teal-700 text-sm font-bold mb-2" htmlFor="email">
                 Email

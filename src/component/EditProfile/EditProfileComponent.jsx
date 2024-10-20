@@ -14,13 +14,16 @@ const EditProfile = () => {
   
   const [editForm, setEditForm] = useState({
     username: '',
-    email: ''
+    email: '',
+    profile_picture: ''
   });
 
   const [error, setError] = useState(null);
   const [isPictureUpdated, setIsPictureUpdated] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+
+  const BASE_URL = 'http://localhost:8000'; // Your backend base URL
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -32,15 +35,23 @@ const EditProfile = () => {
 
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/user/editprofile/', {
+        const response = await axios.get(`${BASE_URL}/api/user/editprofile/`, {
           headers: {
             Authorization: `Token ${token}`,
           },
         });
-        setProfile(response.data);
+        const profileData = response.data;
+        
+        // Check if the profile_picture is a full URL or a relative path and handle it
+        if (profileData.profile_picture && !profileData.profile_picture.startsWith('http')) {
+          profileData.profile_picture = `${BASE_URL}${profileData.profile_picture}`;
+        }
+
+        setProfile(profileData);
         setEditForm({
-          username: response.data.username,
-          email: response.data.email
+          username: profileData.username,
+          email: profileData.email,
+          profile_picture: profileData.profile_picture,
         });
       } catch (error) {
         console.error('There was an error fetching the profile!', error.response || error.message);
@@ -70,14 +81,21 @@ const EditProfile = () => {
       const token = localStorage.getItem('token');
 
       try {
-        await axios.patch('http://localhost:8000/api/user/editprofile/', formData, {
+        const response = await axios.patch(`${BASE_URL}/api/user/editprofile/`, formData, {
           headers: {
             Authorization: `Token ${token}`,
             'Content-Type': 'multipart/form-data'
           },
         });
-        setProfile({ ...profile, profile_picture: URL.createObjectURL(file) });
+
+        const updatedProfile = response.data;
+        if (updatedProfile.profile_picture && !updatedProfile.profile_picture.startsWith('http')) {
+          updatedProfile.profile_picture = `${BASE_URL}${updatedProfile.profile_picture}`;
+        }
+
+        setProfile({ ...profile, profile_picture: updatedProfile.profile_picture });
         setIsPictureUpdated(true);  // Set the flag to true
+        toast.success('Profile picture updated successfully!', { position: 'bottom-right' });
       } catch (error) {
         console.error('There was an error uploading the profile picture!', error.response || error.message);
         setError(error.message);
@@ -90,15 +108,18 @@ const EditProfile = () => {
     const token = localStorage.getItem('token');
 
     try {
-      await axios.patch('http://localhost:8000/api/user/editprofile/', editForm, {
+      await axios.patch(`${BASE_URL}/api/user/editprofile/`, editForm, {
         headers: {
           Authorization: `Token ${token}`,
           'Content-Type': 'application/json'
         },
       });
       setProfile(editForm);
+
+      // Display success toast for both profile update and picture update
+      toast.success('Profile updated successfully!', { position: 'bottom-right' });
       if (isPictureUpdated) {
-        toast.success('Profile updated successfully!');
+        toast.success('Profile picture updated successfully!', { position: 'bottom-right' });
         setIsPictureUpdated(false);  // Reset the flag
       }
     } catch (error) {
@@ -113,13 +134,13 @@ const EditProfile = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-      <ToastContainer />
+      <ToastContainer position="bottom-right" /> {/* Toast container with position */}
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
         <div className="text-center">
           <div className="relative">
             <img
               className="w-24 h-24 rounded-full mx-auto mb-4"
-              src={profile.profile_picture || "https://via.placeholder.com/150"}
+              src={profile.profile_picture}
               alt="Profile"
             />
             <button
