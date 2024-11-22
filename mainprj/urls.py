@@ -4,15 +4,17 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 
-from mainprj .views.auth_views import LoginAPIView, RegisterView
+from mainprj .views.auth_views import LoginAPIView, RegisterView, DoctorRegisterView
 from mainprj .views.prediction_views import PredictDiseaseView, RecentPredictionsView
 from mainprj .views.profile_views import ProfileApiView
-from mainprj .views.other_views import ChangePasswordView
+from mainprj .views.other_views import ChangePasswordView, DoctorListView, AppointmentRequestView, DoctorAppointmentsView
 
 urlpatterns = [
     path('login/',LoginAPIView.as_view(), name='login_view'),
     
     path('register/',RegisterView.as_view(), name='register_view'),
+    
+    path('doctorregister/',DoctorRegisterView.as_view(), name='register_view'),
     
     path('api/auth/changepassword/',ChangePasswordView.as_view(), name='changepassword_view'),
     
@@ -24,7 +26,11 @@ urlpatterns = [
     
     path('api/user/recent-predictions/', RecentPredictionsView.as_view(), name='recent-predictions'),
     
-   
+    path('doctors/', DoctorListView.as_view(), name='doctor-list'),
+    
+    path('appointments/', AppointmentRequestView.as_view(), name='appointment-create'),
+     
+    path('view/appointments/', DoctorAppointmentsView.as_view(), name='appointment-get'), 
     
     ]
 

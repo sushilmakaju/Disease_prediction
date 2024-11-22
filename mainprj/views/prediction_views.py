@@ -89,7 +89,7 @@ class RecentPredictionsView(APIView):
 
     def get(self, request):
         # Fetch recent predictions for the authenticated user
-        recent_preds = Prediction.objects.filter(user=request.user).order_by('-date')[:5]
+        recent_preds = Prediction.objects.filter(user=request.user).order_by('-date')
         serializer = PredictionSerializer(recent_preds, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
