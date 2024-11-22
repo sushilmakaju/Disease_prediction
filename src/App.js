@@ -16,6 +16,9 @@ import ProtectedRoute from './protectedRoutes/protectedRoute';
 import TakeAppointment from './component/AppoinmentComponent/appoinmentPage';
 import SettingComponent from './component/SettingsComponent/settingComponent';
 import ThemeSwitcher from './component/ThemeChanger/ThemeSwitcher';
+import DoctorSignupComponent from './component/Register/doctorRegister';
+import DoctorDashboard from './Doctordashboard/doctorDashboard';
+import ViewAppointmentPage from './component/appoinmentview/appoinmentview';
 
 function App() {
   return (
@@ -29,12 +32,16 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeComponent />} />
             <Route path="/signup" element={<SignupComponent />} />
+            <Route path="/docsignup" element={<DoctorSignupComponent />} />
             <Route path="/login" element={<LoginComponent />} />
             <Route path="/getstarted" element={<GetStartedPage />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/viewappoinment" element={<ViewAppointmentPage />} />
+        
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/doctordashboard" element={<ProtectedRoute><DoctorDashboard /></ProtectedRoute>} />
             <Route path="/checkdisease" element={<ProtectedRoute><DiseasePredictionComponent /></ProtectedRoute>} />
             <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
             <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />

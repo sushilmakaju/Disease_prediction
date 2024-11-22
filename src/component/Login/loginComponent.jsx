@@ -48,16 +48,26 @@ const LoginForm = () => {
                 );
                 console.log(response);
 
-                const { token } = response.data;
+                const { token, user_role } = response.data; // Extract role from the response
                 localStorage.setItem("token", token);
-                console.log(response.data.token)
-                
-                dispatch(login({ token }))
+                localStorage.setItem("user_role", user_role); // Store the role in localStorage
+
+                dispatch(login({ token, user_role })); // Dispatch the role along with the token
                 
                 toast.success("Login successful");
 
+                // Redirect to different dashboards based on the role
                 setTimeout(() => {
-                navigate("/dashboard");
+                    if (user_role === 'admin') {
+                        navigate("/admin-dashboard");
+                    } else if (user_role === 'doctor'){
+
+                      navigate("/doctordashboard")
+                    }
+                    
+                    else {
+                        navigate("/dashboard"); // Default dashboard
+                    }
                 }, 2000);
             } catch (error) {
                 // Show error toast for incorrect credentials

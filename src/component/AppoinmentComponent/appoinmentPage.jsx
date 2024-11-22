@@ -1,100 +1,169 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom'; // To get doctor ID from URL (if needed)
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const TakeAppointment = () => {
-  // Assuming doctor data is coming from props, a global state, or an API.
-  const { doctorId } = useParams(); // Get the doctor ID from URL params
+  const [doctors, setDoctors] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [formData, setFormData] = useState({ date: '', time: '' });
   const [successMessage, setSuccessMessage] = useState('');
-  const [formData, setFormData] = useState({
-    date: '',
-    time: '',
-  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Example doctor data (can be fetched from API)
-  const doctor = {
-    id: doctorId,
-    name: 'Dr. John Doe',
-    specialization: 'Cardiologist',
-    experience: '15 years',
-    contact: 'dr.johndoe@hospital.com',
-  };
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setError('Unauthorized: Please log in first.');
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get('http://localhost:8000/doctors/', {
+          headers: { Authorization: `Token ${token}` },
+        });
+
+        setDoctors(response.data);
+        setLoading(false);
+      } catch {
+        setError('Failed to fetch doctors.');
+        setLoading(false);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAppointmentRequest = (e) => {
+  const handleDoctorSelect = (e) => {
+    setSelectedDoctor(e.target.value);
+  };
+
+  const handleAppointmentRequest = async (e) => {
     e.preventDefault();
-    // Perform API request or appointment scheduling here
+    if (!selectedDoctor) {
+      setError('Please select a doctor.');
+      return;
+    }
 
-    // After success
-    setSuccessMessage(`Appointment with ${doctor.name} has been successfully scheduled!`);
+    // Log the appointment data to check if the doctor ID is being passed
+    console.log('Appointment Data:', { doctor: selectedDoctor, date: formData.date, time: formData.time });
+    console.log('Selected Doctor ID:', selectedDoctor); // Log selected doctor ID for debugging
 
-    // Clear form fields
-    setFormData({
-      date: '',
-      time: '',
-    });
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('Unauthorized: Please log in first.');
+        return;
+      }
+
+      await axios.post(
+        'http://localhost:8000/appointments/',
+        { doctor: selectedDoctor, date: formData.date, time: formData.time },
+        { headers: { Authorization: `Token ${token}` } }
+      );
+
+      setSuccessMessage('Appointment requested successfully.');
+      setFormData({ date: '', time: '' });
+      setError('');
+    } catch {
+      setError('Failed to request an appointment.');
+    }
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 via-green-400 to-blue-300 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
-        <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">Doctor Details</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-blue-700">
+          Take Appointment
+        </h2>
 
-        <div className="mb-4">
-          <h3 className="text-xl font-semibold text-gray-800">{doctor.name}</h3>
-          <p className="text-gray-600">{doctor.specialization}</p>
-          <p className="text-gray-600">Experience: {doctor.experience}</p>
-          <p className="text-gray-600">Contact: {doctor.contact}</p>
-        </div>
+        {error && (
+          <div className="text-red-600 mb-4 text-center font-semibold">
+            {error}
+          </div>
+        )}
+        {successMessage && (
+          <div className="text-green-600 mb-4 text-center font-semibold">
+            {successMessage}
+          </div>
+        )}
 
         <form onSubmit={handleAppointmentRequest}>
-          <div className="mb-4">
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-              Appointment Date
+          <div className="mb-6">
+            <label
+              htmlFor="doctor-select"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Doctor
+            </label>
+            <select
+              id="doctor-select"
+              onChange={handleDoctorSelect}
+              className="mt-1 p-3 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              aria-label="Select a doctor"
+              required
+            >
+              <option value="">-- Select a Doctor --</option>
+              {doctors.map((doctor) => (
+                <option key={doctor.id} value={doctor.id}>
+                  {doctor.id} 
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mb-6">
+            <label
+              htmlFor="appointment-date"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Date
             </label>
             <input
+              id="appointment-date"
               type="date"
               name="date"
               value={formData.date}
               onChange={handleInputChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 p-3 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              aria-label="Select appointment date"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-              Appointment Time
+          <div className="mb-6">
+            <label
+              htmlFor="appointment-time"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Time
             </label>
             <input
+              id="appointment-time"
               type="time"
               name="time"
               value={formData.time}
               onChange={handleInputChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 p-3 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              aria-label="Select appointment time"
               required
             />
           </div>
 
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 w-full"
+            className="bg-blue-700 hover:bg-blue-800 text-white font-bold px-6 py-3 rounded-md w-full shadow-sm transition-transform transform hover:scale-105"
           >
             Request Appointment
           </button>
         </form>
-
-        {successMessage && (
-          <div className="mt-4 text-green-700 bg-green-100 p-3 rounded-md">
-            {successMessage}
-          </div>
-        )}
       </div>
     </div>
   );
