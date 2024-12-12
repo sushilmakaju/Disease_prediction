@@ -52,7 +52,7 @@ class Prediction(models.Model):
     disease = models.CharField(max_length=255)
     probability = models.FloatField()
     description = models.TextField()
-    precautions = models.JSONField()  # Store the list of precautions as JSON
+    precautions = models.JSONField(null=True, blank=True)  # Store the list of precautions as JSON
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -69,7 +69,7 @@ class AppointmentRequest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments')  # The user requesting the appointment
     doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments_received')  # The doctor receiving the request
     date = models.DateField()  # Date of the appointment
-    time = models.TimeField()  # Time of the appointment
+    time = models.TimeField(blank=True, null=True)  # Time of the appointment
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending') 
     created_at = models.DateTimeField(auto_now_add=True)  # Automatically add the request creation time
     updated_at = models.DateTimeField(auto_now=True)  # Automatically update when the request is modified

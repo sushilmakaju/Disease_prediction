@@ -22,6 +22,12 @@ class PredictionSerializer(serializers.ModelSerializer):
         model = Prediction
         fields = ['disease', 'probability', 'description', 'precautions', 'date']
 
+class PredictionResponseSerializer(serializers.Serializer):
+    disease = serializers.CharField()
+    probability = serializers.FloatField()
+    description = serializers.CharField()
+    precautions = serializers.ListField(child=serializers.CharField())
+
 
 class UserProfileserializers(serializers.ModelSerializer):
     
@@ -38,29 +44,53 @@ class UserProfileserializers(serializers.ModelSerializer):
 class DoctorFetchSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [ 'id', 'first_name', 'specialty', 'qualifications', 'email']  
+        fields = ['id', 'first_name', 'specialty', 'qualifications', 'email']
         
         
 class AppointmentRequestSerializer(serializers.ModelSerializer):
-    # doctor_name = serializers.CharField(source='doctor.get_full_name')  # Doctor's full name
-    # user_name = serializers.CharField(source='user.get_full_name', read_only=True)  # User's full name
-    
+    # Adding a custom field to display the first name of the user
+    user_first_name = serializers.CharField(source='user.first_name', read_only=True)
+    doctor_first_name = serializers.CharField(source='doctor.first_name', read_only=True)
+
     class Meta:
         model = AppointmentRequest
         fields = [
             'id', 
-            
             'user', 
-            # 'user_name'
+            'user_first_name', 
+            # Include the first name of the user
             'doctor', 
-             
+            'doctor_first_name',
             'date', 
-            'time', 
+      
+            
             'status', 
             'created_at', 
             'updated_at'
         ]
-        read_only_fields = ['id', 'status', 'created_at', 'updated_at']  # These fields cannot be modified
+        read_only_fields = ['id', 'created_at', 'updated_at']
+# These fields cannot be modified
 
     
+class DoctorAppointmenSerializter(serializers.ModelSerializer):
+    # Adding a custom field to display the first name of the user
+    user_first_name = serializers.CharField(source='user.first_name', read_only=True)
+    doctor_first_name = serializers.CharField(source='doctor.first_name', read_only=True)
 
+    class Meta:
+        model = AppointmentRequest
+        fields = [
+            'id', 
+            'user', 
+            'user_first_name', 
+            # Include the first name of the user
+            'doctor', 
+            'doctor_first_name',
+            'date', 
+      
+            'time',
+            'status', 
+            'created_at', 
+            'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']

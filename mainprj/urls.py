@@ -7,7 +7,7 @@ from django.conf import settings
 from mainprj .views.auth_views import LoginAPIView, RegisterView, DoctorRegisterView
 from mainprj .views.prediction_views import PredictDiseaseView, RecentPredictionsView
 from mainprj .views.profile_views import ProfileApiView
-from mainprj .views.other_views import ChangePasswordView, DoctorListView, AppointmentRequestView, DoctorAppointmentsView
+from mainprj .views.other_views import ChangePasswordView, DoctorListView, AppointmentRequestView, DoctorAppointmentsView, DoctorListGenericView, PatientsListGenericView, UpdateAppointmentStatusAPIView, UserAppointmentsView, AllAppointmentsView
 
 urlpatterns = [
     path('login/',LoginAPIView.as_view(), name='login_view'),
@@ -30,7 +30,17 @@ urlpatterns = [
     
     path('appointments/', AppointmentRequestView.as_view(), name='appointment-create'),
      
-    path('view/appointments/', DoctorAppointmentsView.as_view(), name='appointment-get'), 
+    path('view/appointments/', DoctorAppointmentsView.as_view(), name='appointment-get'),
+     
+    path('view/all/appointments/', AllAppointmentsView.as_view(), name='appointmentall-get'), 
+    
+    path('view/doctors/', DoctorListGenericView.as_view(), name='doctor-list'),
+    
+    path('view/patients/', PatientsListGenericView.as_view(), name='patients-list'),
+    
+    path('view/get/user/appointment', UserAppointmentsView.as_view(), name='appointment-list'),
+    
+    path('appointments/<int:pk>/update-status/', UpdateAppointmentStatusAPIView.as_view(), name='update-appointment-status'),
     
     ]
 

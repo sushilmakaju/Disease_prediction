@@ -14,10 +14,14 @@ import pandas as pd
 import pickle
 
 
+model = pickle.load(open('Random_Forest.pkl', 'rb'))
+print ("model loaded successfully")
 
-model = pickle.load(open('ExtraTrees.pkl', 'rb'))
+
 desc = pd.read_csv("C:\\Users\\Asus\\Desktop\\finalyearproject_diseasepredicition\\Backend\\dataset\\symptom_Description.csv")
 prec = pd.read_csv("C:\\Users\\Asus\\Desktop\\finalyearproject_diseasepredicition\\Backend\\dataset\\symptom_precaution.csv")
+print("Datasets loaded successfully!")
+
 
 diseases = [ '(vertigo) Paroymsal Positional Vertigo', 'AIDS', 'Acne', 'Alcoholic hepatitis', 'Allergy', 'Arthritis', 'Bronchial Asthma', 'Cervical spondylosis', 'Chicken pox', 'Chronic cholestasis', 'Common Cold', 'Dengue', 'Diabetes', 'Dimorphic hemmorhoids(piles)', 'Drug Reaction', 'Fungal infection', 'GERD', 'Gastroenteritis', 'Heart attack', 'Hepatitis B', 'Hepatitis C', 'Hepatitis D', 'Hepatitis E', 'Hypertension', 'Hyperthyroidism', 'Hypoglycemia', 'Hypothyroidism', 'Impetigo', 'Jaundice', 'Malaria', 'Migraine', 'Osteoarthristis', 'Paralysis (brain hemorrhage)', 'Peptic ulcer diseae', 'Pneumonia', 'Psoriasis', 'Tuberculosis', 'Typhoid', 'Urinary tract infection', 'Varicose veins', 'hepatitis A' ]
 
@@ -48,18 +52,18 @@ class PredictDiseaseView(APIView):
             probability = round(float(top5_proba[i]), 9)
             disp = desc[desc['Disease'] == disease].values[0][1] if disease in desc["Disease"].unique() else "No description available"
 
-            precautions = []
-            if disease in prec["Disease"].unique():
-                c = np.where(prec['Disease'] == disease)[0][0]
-                for j in range(1, len(prec.iloc[c])):
-                    precautions.append(prec.iloc[c, j])
+            # precautions = []
+            # if disease in prec["Disease"].unique():
+            #     c = np.where(prec['Disease'] == disease)[0][0]
+            #     for j in range(1, len(prec.iloc[c])):
+            #         precautions.append(prec.iloc[c, j])
 
             # Create a dictionary with the disease prediction details
             prediction = {
                 'disease': disease,
                 'probability': probability,
                 'description': disp,
-                'precautions': precautions
+                # 'precautions': precautions
             }
             response_data.append(prediction)
 
@@ -70,16 +74,10 @@ class PredictDiseaseView(APIView):
                     disease=disease,
                     probability=probability,
                     description=disp,
-                    precautions=precautions
+                    # precautions=precautions
                 )
 
         serializer = PredictionSerializer(response_data, many=True)
-
-        # Increment the prediction count if the user is authenticated
-        if request.user.is_authenticated:
-            user = request.user
-            user.prediction_count += 1
-            user.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
