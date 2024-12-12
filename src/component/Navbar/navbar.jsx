@@ -47,12 +47,12 @@ const Navbar = () => {
                 >
                   Login
                 </Link>
-                <Link 
+                {/* <Link 
                   to="/signup" 
                   className="text-white hover:underline px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
                 >
                   Signup
-                </Link>
+                </Link> */}
               </>
             )}
           </div>
@@ -110,13 +110,13 @@ const Navbar = () => {
                 >
                   Login
                 </Link>
-                <Link 
+                {/* <Link 
                   to="/signup" 
                   className="text-white block px-3 py-2 rounded-md text-base font-medium hover:underline cursor-pointer"
                   onClick={() => setIsOpen(false)}
                 >
                   Signup
-                </Link>
+                </Link> */}
               </>
             )}
           </div>

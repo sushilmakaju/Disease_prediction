@@ -19,6 +19,7 @@ import ThemeSwitcher from './component/ThemeChanger/ThemeSwitcher';
 import DoctorSignupComponent from './component/Register/doctorRegister';
 import DoctorDashboard from './Doctordashboard/doctorDashboard';
 import ViewAppointmentPage from './component/appoinmentview/appoinmentview';
+import ViewAppointmentsUser from './component/ViewAppointmentUser/UserAppointment';
 
 function App() {
   return (
@@ -36,7 +37,6 @@ function App() {
             <Route path="/login" element={<LoginComponent />} />
             <Route path="/getstarted" element={<GetStartedPage />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
-            <Route path="/viewappoinment" element={<ViewAppointmentPage />} />
         
 
             {/* Protected Routes */}
@@ -48,7 +48,9 @@ function App() {
             <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
             <Route path="/takeappoinment" element={<ProtectedRoute><TakeAppointment /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><SettingComponent /></ProtectedRoute>} />
-            <Route path="/themechanger" element={<ThemeSwitcher />} />
+            <Route path="/viewappoinment" element={<ProtectedRoute><ViewAppointmentPage /></ProtectedRoute>} />
+            <Route path="/view-appointments-user" element={<ProtectedRoute><ViewAppointmentsUser /></ProtectedRoute>} />
+            
           </Routes>
         </div>
 

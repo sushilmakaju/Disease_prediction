@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
 
 const DoctorDashboard = () => {
     const [profile, setProfile] = useState({
@@ -39,7 +38,7 @@ const DoctorDashboard = () => {
             }
         };
 
-        // Fetch today's appointments
+        // Fetch appointments
         const fetchAppointments = async () => {
             try {
                 const response = await axios.get('http://127.0.0.1:8000/view/appointments/', {
@@ -47,10 +46,19 @@ const DoctorDashboard = () => {
                         Authorization: `Token ${token}`,
                     },
                 });
-                const today = dayjs().format('YYYY-MM-DD'); // Format today's date
-                const todaysAppointments = response.data.filter(
-                    (appointment) => appointment.date === today
-                );
+
+                // Get today's date in YYYY-MM-DD format
+                const today = new Date().toISOString().split('T')[0];
+                console.log("Today's Date:", today);
+
+                // Filter appointments for today (raw data comparison)
+                const todaysAppointments = response.data.filter((appointment) => {
+                    const appointmentDate = appointment.date; // Assuming `appointment.date` is in `YYYY-MM-DD` format
+                    console.log(`Comparing: ${appointmentDate} === ${today}`);
+                    return appointmentDate === today;
+                });
+
+                console.log('Filtered Appointments:', todaysAppointments);
                 setAppointments(todaysAppointments);
             } catch (error) {
                 console.error('Error fetching appointments!', error.response || error.message);
@@ -69,12 +77,32 @@ const DoctorDashboard = () => {
                 <div className="p-4 text-lg font-bold">Doctor Dashboard</div>
                 <nav className="mt-4">
                     <ul>
-                        <li className="p-4 hover:bg-blue-600">Dashboard</li>
-                        <li className="p-4 hover:bg-blue-600">Appointments</li>
-                        <li className="p-4 hover:bg-blue-600">Patients</li>
-                        <li className="p-4 hover:bg-blue-600">Prescriptions</li>
-                        <li className="p-4 hover:bg-blue-600">Chat</li>
-                        <li className="p-4 hover:bg-blue-600">Settings</li>
+                        <li
+                            className="p-4 hover:bg-blue-600 cursor-pointer"
+                            onClick={() => navigate('/dashboard')}
+                        >
+                            Dashboard
+                        </li>
+                        <li
+                            className="p-4 hover:bg-blue-600 cursor-pointer"
+                            onClick={() => navigate('/viewappoinment')}
+                        >
+                            Appointments
+                        </li>
+                        <li
+                            className="p-4 hover:bg-blue-600 cursor-pointer"
+                            onClick={() => navigate('/checkdisease')}
+                        >
+                            Predict Disease
+                        </li>
+                        <li
+                            className="p-4 hover:bg-blue-600 cursor-pointer"
+                            onClick={() => navigate('/prescriptions')}
+                        >
+                            Prescriptions
+                        </li>
+
+
                     </ul>
                 </nav>
             </aside>
@@ -98,8 +126,8 @@ const DoctorDashboard = () => {
                             {appointments.length > 0 ? (
                                 appointments.map((appointment) => (
                                     <li key={appointment.id} className="border-b py-2">
-                                        <strong>{appointment.user}</strong> -{' '}
-                                        {(appointment.time)} - {(appointment.date)}
+                                        <strong>User ID:</strong> {appointment.user_first_name} -{' '}
+                                        <strong>Time:</strong> {appointment.time}
                                     </li>
                                 ))
                             ) : (
@@ -122,29 +150,12 @@ const DoctorDashboard = () => {
                     {/* Quick Actions */}
                     <div className="bg-white shadow rounded p-4">
                         <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded w-full mb-2">
-                            Schedule Appointment
-                        </button>
+
                         <button className="bg-green-500 text-white px-4 py-2 rounded w-full">
                             Write Prescription
                         </button>
                     </div>
 
-                    {/* Recent Activities */}
-                    <div className="bg-white shadow rounded p-4 col-span-2">
-                        <h2 className="text-xl font-bold mb-4">Recent Activities</h2>
-                        <ul>
-                            <li className="border-b py-2">
-                                Consultation with <strong>John Doe</strong> completed.
-                            </li>
-                            <li className="border-b py-2">
-                                Prescription for <strong>Jane Smith</strong> updated.
-                            </li>
-                            <li className="py-2">
-                                Message sent to <strong>Michael Brown</strong>.
-                            </li>
-                        </ul>
-                    </div>
                 </section>
             </main>
         </div>

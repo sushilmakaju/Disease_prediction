@@ -12,6 +12,7 @@ const DiseasePredictionComponent = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [symptoms, setSymptoms] = useState([]);
   const [predictionVisible, setPredictionVisible] = useState(false);
+  const [cautionMessage, setCautionVisible] = useState(false);  // This state controls the caution message visibility
   const [predictedDisease, setPredictedDisease] = useState('');
   const [confidenceScore, setConfidenceScore] = useState(0);
   const [precautions, setPrecautions] = useState('');
@@ -27,7 +28,7 @@ const DiseasePredictionComponent = () => {
     if (!symptoms.includes(symptom)) {
       setSymptoms(prev => [...prev, symptom]);
     }
-    setDropdownVisible(false);
+    
   };
 
   const deleteSymptom = (symptomToDelete) => {
@@ -57,6 +58,7 @@ const DiseasePredictionComponent = () => {
         setConfidenceScore(probability * 100);
         setPrecautions(precautions);
         setPredictionVisible(true);
+        setCautionVisible(true);  // Show caution message after prediction
         setLoading(false);
       } catch (error) {
         console.error('Error predicting disease:', error);
@@ -198,15 +200,16 @@ const DiseasePredictionComponent = () => {
                 </a>
               </button>
             </div>
-            {/* Added Take Appointment button */}
-            <div className="text-center mt-4">
-              <button
-                onClick={() => navigate('/takeappoinment')}
-                className="bg-purple-500 text-white py-3 px-6 rounded-full shadow-lg hover:bg-purple-600 transition duration-300"
-              >
-                Take Appointment
-              </button>
-            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* Caution Message shown after prediction */}
+      {cautionMessage && (
+        <div className="w-full max-w-md mt-8">
+          <div className="bg-yellow-200 text-black p-4 rounded-lg shadow-lg">
+            <p className="font-semibold">Caution: Our AI-based predictions are advanced but not infallible. Always consult a medical professional for accurate diagnosis and treatment.</p>
           </div>
         </div>
       )}

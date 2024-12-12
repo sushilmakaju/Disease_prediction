@@ -50,10 +50,6 @@ const TakeAppointment = () => {
       return;
     }
 
-    // Log the appointment data to check if the doctor ID is being passed
-    console.log('Appointment Data:', { doctor: selectedDoctor, date: formData.date, time: formData.time });
-    console.log('Selected Doctor ID:', selectedDoctor); // Log selected doctor ID for debugging
-
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -113,7 +109,7 @@ const TakeAppointment = () => {
               <option value="">-- Select a Doctor --</option>
               {doctors.map((doctor) => (
                 <option key={doctor.id} value={doctor.id}>
-                  {doctor.id} 
+                  {doctor.first_name} - {doctor.qualifications} -{doctor.specialty}
                 </option>
               ))}
             </select>
@@ -135,27 +131,11 @@ const TakeAppointment = () => {
               className="mt-1 p-3 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               aria-label="Select appointment date"
               required
+              min={new Date().toISOString().split("T")[0]} // Setting the minimum date to today's date
             />
           </div>
 
-          <div className="mb-6">
-            <label
-              htmlFor="appointment-time"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Time
-            </label>
-            <input
-              id="appointment-time"
-              type="time"
-              name="time"
-              value={formData.time}
-              onChange={handleInputChange}
-              className="mt-1 p-3 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              aria-label="Select appointment time"
-              required
-            />
-          </div>
+
 
           <button
             type="submit"
